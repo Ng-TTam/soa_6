@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Manage</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap 4 -->
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+  <link href="css/login.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+  <style>
+@charset "ISO-8859-1";
+
+/* sign in FORM */
+#logreg-forms {
+	width: 400px;
+	margin: 8% 35%;
+	background-color: #f3f3f3;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.table-dark tr th {
+	text-align: center;
+}
+
+.table tbody tr td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.color-palette {
+	height: 35px;
+	line-height: 35px;
+	text-align: right;
+	padding-right: .75rem;
+}
+
+.color-palette.disabled {
+	text-align: center;
+	padding-right: 0;
+	display: block;
+}
+
+.color-palette-set {
+	margin-bottom: 15px;
+}
+
+.color-palette span {
+	display: none;
+	font-size: 12px;
+}
+
+.color-palette:hover span {
+	display: block;
+}
+
+.color-palette.disabled span {
+	display: block;
+	text-align: left;
+	padding-left: .75rem;
+}
+
+.color-palette-box h4 {
+	position: absolute;
+	left: 1.25rem;
+	margin-top: .75rem;
+	color: rgba(255, 255, 255, 0.8);
+	font-size: 12px;
+	display: block;
+	z-index: 7;
+}
+
+.table-dark tr {
+	height: 5px;
+}
+
+.reviews-pagination {
+	text-align: center;
+}
+
+.reviews-pagination li {
+	display: inline-block;
+	width: 35px;
+	height: 35px;
+	line-height: 35px;
+	text-align: center;
+	background-color: #FFF;
+	border: 1px solid #E4E7ED;
+	-webkit-transition: 0.2s all;
+	transition: 0.2s all;
+}
+
+.reviews-pagination li:hover {
+	background-color: #E4E7ED;
+	color: #D10024;
+}
+
+.reviews-pagination li.active {
+	background-color: gray;
+	border-color: gray;
+	color: #FFF;
+	cursor: default;
+}
+
+.reviews-pagination li a {
+	display: block;
+}
+
+ul li a {
+	text-decoration: none;
+}
+.filter {
+    margin-left:20px;
+	padding: 4px; /* Kích thước padding bên trong select */
+	border: 1px solid gray; /* Viền xung quanh select */
+	border-radius: 4px; /* Bo tròn viền của select */
+	font-size: 15px; /* Kích thước chữ */
+	background-color: #fff; /* Màu nền của select */
+	color: #333; /* Màu chữ của select */
+	appearance: none;
+	/* Ẩn giao diện mặc định của select (đối với trình duyệt webkit-based) */
+	cursor: pointer; /* Con trỏ khi hover qua select */
+}
+
+/* Tùy chỉnh giao diện cho tùy chọn option */
+.filter option {
+	font-size: 14px; /* Kích thước chữ */
+	background-color: #fff; /* Màu nền của option */
+	color: #333; /* Màu chữ của option */
+}
+
+/* Tùy chỉnh giao diện khi select được nhấp chọn */
+.filter:focus {
+	border-color: #007bff; /* Màu viền khi select được chọn */
+	box-shadow: 0 0 5px rgb(64, 128, 128);
+	/* Hiệu ứng bóng khi select được chọn */
+}
+
+#chartSelect option {
+	font-size: 14px; /* Kích thước chữ */
+	background-color: #fff; /* Màu nền của option */
+	color: #333; /* Màu chữ của option */
+}
+
+/* Tùy chỉnh giao diện khi select được nhấp chọn */
+#chartSelect:focus {
+	border-color: #007bff; /* Màu viền khi select được chọn */
+	box-shadow: 0 0 5px rgb(64, 128, 128);
+	/* Hiệu ứng bóng khi select được chọn */
+}
+
+/* Tùy chỉnh giao diện khi hover qua option */
+#chartSelect option:hover {
+	background-color: #007bff; /* Màu nền khi hover qua option */
+	color: #fff; /* Màu chữ khi hover qua option */
+}
+
+#page-numbers1 button {
+	margin-right: 1px;
+	margin-left: 1px;
+	width: 30px;
+}
+
+#pagination1 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 10px;
+	/* Điều chỉnh khoảng cách giữa container và pagination theo ý muốn */
+}
+
+#pagination1 #page-numbers1 :active {
+	background-color: gray;
+}
+
+#page-numbers1 button.active {
+	border-color: gray !important;
+	background-color: gray !important;
+	color: white !important;
+}
+
+#page-numbers1 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#page-numbers1 button {
+	margin-right: 1px;
+	margin-left: 1px;
+	width: 30px;
+	border: 1px solid black; /* Viền màu đen */
+}
+
+#page-numbers1 button.active {
+	border-color: gray; /* Viền màu đỏ cho nút đã chọn */
+	background-color: gray; /* Nền màu đỏ cho nút đã chọn */
+	color: white; /* Màu chữ trắng cho nút đã chọn */
+}
+
+.page-number {
+            margin: 0 3px;
+            border: 1px solid black;
+            padding: 2px 3px;
+            cursor: pointer;
+            background-color: white;
+        }
+
+        .page-number:hover {
+            background-color: #E4E7ED;
+        }
+
+        .page-number.active,
+#pagination1 .page-number:hover {
+    background-color: gray;
+    color: white;
+}
+
+</style>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+		<!-- Navbar -->
+		<nav style="height: 45px; position: relative; display: flex; justify-content: center; align-items: center;">
+    <!-- Left navbar links -->
+    <div style="height: 29px">
+        <a style="font-size: 20px">Lịch Sử Nộp Thuế Thu Nhập Cá Nhân</a>
+    </div>
+</nav>
+		 
+    <table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>STT</th>
+            <th>Họ và tên</th>
+            <th>Địa chỉ nộp</th>
+            <th>Ngày nộp</th>
+            <th>Năm thuế</th>
+            <th>Kỳ thuế</th>
+            <th>Trạng thái</th>
+            <th>Tiền thuế(vnd)</th>
+            <th>Muộn (ngày)</th>
+            <th>Tiền phạt(vnd)</th>
+            <th>Tổng tiền nộp(vnd)</th>
+        </tr>
+    </thead>
+    <tbody id="historyTableBody">
+        <!-- Data will be dynamically inserted here -->
+    </tbody>
+</table>
+
+<div id="blockPagination">
+	<div id="pagination1">
+    <button style="border-color: gray;" onclick="prevPage1()">Trang trước</button>
+    <div id="page-numbers1"></div> <!-- Đặt số trang vào trong thẻ div -->
+    <button style="border-color: gray;" onclick="nextPage1()">Trang sau</button>
+  </div>
+</div>
+	
+
+		<aside class="control-sidebar control-sidebar-dark">
+			<!-- Control sidebar content goes here -->
+		</aside>
+		<!-- /.control-sidebar -->
+	
+
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+
+</body>
+<script th:inline="javascript">
+document.addEventListener("DOMContentLoaded", function() {
+    var historys = /*[[${historys}]]*/ [];
+    var currentPage1 = 1;
+    var recordsPerPage1 = 11;
+    var listingTable = document.getElementById("historyTableBody");
+    var pageNumbers = document.getElementById("page-numbers1");
+    var prevButton = document.querySelector("#pagination1 button:first-of-type");
+    var nextButton = document.querySelector("#pagination1 button:last-of-type");
+	
+    if (historys.length === 0) {
+        document.getElementById('blockPagination').style.display = 'none';
+        return;
+    } else {
+        document.getElementById('blockPagination').style.display = 'block';
+    }
+    
+    prevButton.addEventListener("click", function() {
+        if (currentPage1 > 1) {
+            currentPage1--;
+            changePage1(currentPage1);
+        }
+    });
+
+    nextButton.addEventListener("click", function() {
+        if (currentPage1 < numPages1()) {
+            currentPage1++;
+            changePage1(currentPage1);
+        }
+    });
+
+    pageNumbers.addEventListener("click", function(event) {
+        if (event.target.tagName === "BUTTON") {
+            var pageNumber = parseInt(event.target.textContent);
+            if (!isNaN(pageNumber)) {
+                changePage1(pageNumber);
+            }
+        }
+    });
+
+    function changePage1(page) {
+        // Validate page
+        if (page < 1) page = 1;
+        if (page > numPages1()) page = numPages1();
+
+        currentPage1 = page; // Update currentPage1
+
+        listingTable.innerHTML = "";
+
+        for (var i = (page - 1) * recordsPerPage1; i < (page * recordsPerPage1) && i < historys.length; i++) {
+            listingTable.innerHTML += "<tr>" +
+                "<td>" + (i + 1) + "</td>" +
+                "<td>" + historys[i].name + "</td>" +
+                "<td>" + historys[i].location + "</td>" +
+                "<td>" + historys[i].date + "</td>" +
+                "<td>" + historys[i].taxYear + "</td>" +
+                "<td>" + historys[i].taxPeriod + "</td>" +
+                "<td>" + historys[i].status + "</td>" +
+                "<td>" + historys[i].taxMoney + "</td>" +
+                "<td>" + historys[i].numberOfDayLate + "</td>" +
+                "<td>" + historys[i].finedAmount + "</td>" +
+                "<td>" + historys[i].totalPayment + "</td>" +
+                "</tr>";
+        }
+        
+        // Hiển thị số trang bên trong ô bảng
+        renderPageNumbers();
+    }
+
+    function numPages1() {
+        return Math.ceil(historys.length / recordsPerPage1);
+    }
+
+    function renderPageNumbers() {
+        pageNumbers.innerHTML = "";
+        for (var i = 1; i <= numPages1(); i++) {
+            // Kiểm tra trạng thái active cho từng trang
+            if (i === currentPage1) {
+                pageNumbers.innerHTML += "<button class='active' onclick='changePage1(" + i + ")'>" + i + "</button>";
+            } else {
+                pageNumbers.innerHTML += "<button onclick='changePage1(" + i + ")'>" + i + "</button>";
+            }
+        }
+    }
+
+    // Khởi tạo trang đầu tiên khi trang web được tải
+    changePage1(1);
+});
+</script>
+
+
+
+
+</html>

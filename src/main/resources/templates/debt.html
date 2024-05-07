@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>IOT-N13</title>
+<!-- Tell the browser to be responsive to screen width -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+<!-- Ionicons -->
+<link rel="stylesheet"
+	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!-- Tempusdominus Bbootstrap 4 -->
+<link rel="stylesheet"
+	href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+<!-- iCheck -->
+<link rel="stylesheet"
+	href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+<!-- JQVMap -->
+<link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="dist/css/adminlte.min.css">
+<!-- overlayScrollbars -->
+<link rel="stylesheet"
+	href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+<!-- Daterange picker -->
+<link rel="stylesheet"
+	href="plugins/daterangepicker/daterangepicker.css">
+<!-- summernote -->
+<link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+  <link href="css/login.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+   
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	
+
+<style>
+.table-dark tr th {
+	text-align: center;
+}
+
+.table tbody tr th {
+	text-align: center;
+	vertical-align: middle;
+}
+
+/* CSS cho các trang khác */
+#chartSelect {
+	padding: 5px; /* Kích thước padding bên trong select */
+	border: 1px solid red; /* Viền xung quanh select */
+	border-radius: 4px; /* Bo tròn viền của select */
+	font-size: 15px; /* Kích thước chữ */
+	background-color: #fff; /* Màu nền của select */
+	color: #333; /* Màu chữ của select */
+	appearance: none;
+	/* Ẩn giao diện mặc định của select (đối với trình duyệt webkit-based) */
+	cursor: pointer; /* Con trỏ khi hover qua select */
+}
+
+/* Tùy chỉnh giao diện cho tùy chọn option */
+#chartSelect option {
+	font-size: 14px; /* Kích thước chữ */
+	background-color: #fff; /* Màu nền của option */
+	color: #333; /* Màu chữ của option */
+}
+
+/* Tùy chỉnh giao diện khi select được nhấp chọn */
+#chartSelect:focus {
+	border-color: #007bff; /* Màu viền khi select được chọn */
+	box-shadow: 0 0 5px rgb(64, 128, 128);
+	/* Hiệu ứng bóng khi select được chọn */
+}
+
+/* Tùy chỉnh giao diện khi hover qua option */
+#chartSelect option:hover {
+	background-color: #007bff; /* Màu nền khi hover qua option */
+	color: #fff; /* Màu chữ khi hover qua option */
+}
+
+#page-numbers1 button {
+	margin-right: 1px;
+	margin-left: 1px;
+	width: 30px;
+}
+
+#pagination1 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 10px;
+	/* Điều chỉnh khoảng cách giữa container và pagination theo ý muốn */
+}
+
+#pagination1 #page-numbers1 :active {
+	background-color: gray;
+}
+
+#page-numbers1 button.active {
+	border-color: gray !important;
+	background-color: gray !important;
+	color: white !important;
+}
+
+#page-numbers1 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#page-numbers1 button {
+	margin-right: 1px;
+	margin-left: 1px;
+	width: 30px;
+	border: 1px solid black; /* Viền màu đen */
+}
+
+#page-numbers1 button.active {
+	border-color: gray; /* Viền màu đỏ cho nút đã chọn */
+	background-color: gray; /* Nền màu đỏ cho nút đã chọn */
+	color: white; /* Màu chữ trắng cho nút đã chọn */
+}
+
+.page-number {
+            margin: 0 3px;
+            border: 1px solid black;
+            padding: 2px 3px;
+            cursor: pointer;
+            background-color: white;
+        }
+
+        .page-number:hover {
+            background-color: #E4E7ED;
+        }
+
+        .page-number.active,
+#pagination1 .page-number:hover {
+    background-color: gray;
+    color: white;
+}
+</style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+	<div class="wrapper">
+
+		<!-- Navbar -->
+		<nav
+			class="main-header navbar navbar-expand navbar-white navbar-light"
+			style="height: 45px">
+			<!-- Left navbar links -->
+			<ul class="navbar-nav">
+				<li class="nav-item"><a class="nav-link" data-widget="pushmenu"
+					href="#" role="button"><i class="fas fa-bars"></i></a></li>
+			</ul>
+			<select style="width: 170px" id="address" class="form-select">
+			<option>Chọn tỉnh</option>
+			<option>An Giang</option><option>Bà Rịa-Vũng Tàu</option><option>Bạc Liêu</option><option>Bắc Giang</option><option>Bắc Kạn</option>
+			<option>Bắc Ninh</option><option>Bến Tre</option><option>Bình Dương</option><option>Bình Định</option><option>Bình Phước</option>
+			<option>Bình Thuận</option><option>Cà Mau</option><option>Cao Bằng</option><option>Cần Thơ</option><option>Đà Nẵng</option>
+			<option>Đắk Lắk</option><option>Đắk Nông</option><option>Điện Biên</option><option>Đồng Nai</option><option>Đồng Tháp</option>
+			<option>Gia Lai</option><option>Hà Giang</option><option>Hà Nam</option><option>Hà Nội</option><option>Hà Tĩnh</option>
+			<option>Hải Dương</option><option>Hải Phòng</option><option>Hậu Giang</option><option>Hòa Bình</option><option>Hưng Yên</option>
+			<option>Khánh Hòa</option><option>Kiên Giang</option><option>Kon Tum</option><option>Lai Châu</option><option>Lạng Sơn</option>
+			<option>Lào Cai</option><option>Lâm Đồng</option><option>Long An</option><option>Nam Định</option><option>Nghệ An</option>
+			<option>Ninh Bình</option><option>Ninh Thuận</option><option>Phú Thọ</option><option>Phú Yên</option><option>Quảng Bình</option>		
+			<option>Quảng Nam</option><option>Quảng Ngãi</option><option>Quảng Ninh</option><option>Quảng Trị</option><option>Sóc Trăng</option>
+			<option>Sơn La</option><option>Tây Ninh</option><option>Thái Bình</option><option>Thái Nguyên</option><option>Thanh Hóa</option>
+			<option>Thừa Thiên Huế</option><option>Tiền Giang</option><option>TP Hồ Chí Minh</option><option>Trà Vinh</option><option>Tuyên Quang</option>
+			<option>Vĩnh Long</option><option>Vĩnh Phúc</option><option>Yên Bái</option>
+	 </select>
+	
+	 <select style="width: 125px;margin-left: 10px" id="year" class="form-select" >
+	        <option>Chọn năm</option>
+			<option>2024</option>
+			<option>2023</option>
+			<option>2022</option>
+	 </select>
+	 
+	 <select style="width: 130px;margin-left: 10px" id="type" class="form-select" onchange="redirectToSelectedOption()">
+			<option>Hình thức</option>
+			<option>Tất cả</option>
+			<option>Theo tháng</option>
+			<option>Theo quý</option>
+	 </select>
+	 
+	 <select style="width: 135px;margin-left: 10px" id="month" class="form-select" disabled="true">
+			<option>Chọn tháng</option><option>Tất cả</option>
+			<option>Tháng 1</option><option>Tháng 2</option><option>Tháng 3</option><option>Tháng 4</option>
+			<option>Tháng 5</option><option>Tháng 6</option><option>Tháng 7</option><option>Tháng 8</option>
+			<option>Tháng 9</option><option>Tháng 10</option><option>Tháng 11</option><option>Tháng 12</option>
+	 </select>
+	 
+	 <select style="width: 120px;margin-left: 10px" id="quarter" class="form-select" disabled="true">
+			<option>Chọn quý</option>
+			<option>Tất cả</option>
+			<option>Quý 1</option><option>Quý 2</option>
+			<option>Quý 3</option><option>Quý 4</option>
+	 </select>
+	
+	<div style="margin-left: 20px; display: flex; align-items: center; height: 36px;">
+    <a class="btn btn-info d-flex justify-content-center align-items-center" style="color: white; font-weight: bold; height: 100%;">Xem</a>
+</div>
+	  
+		</nav>
+		<!-- /.navbar -->
+
+		<!-- Main Sidebar Container -->
+		<aside class="main-sidebar sidebar-dark-primary elevation-4">
+			<!-- Brand Logo -->
+			<!-- Sidebar -->
+			<div style="height: 430px" class="sidebar">
+				<!-- Sidebar user panel (optional) -->
+				<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+					<div class="image">
+						<i style="margin-left: 9px;margin-top: 10px;color: white;" class="fa fa-user-circle nav-icon"></i>
+					</div>
+					<div class="info">
+						<a href="#" class="d-block" style="text-decoration: none" th:if = "${session.account!=null}">[[${session.account.username}]]</a>
+					</div>
+				</div>
+
+				<!-- Sidebar Menu -->
+				<nav class="mt-2">
+					<ul class="nav nav-pills nav-sidebar flex-column"
+						data-widget="treeview" role="menu" data-accordion="false">
+						<!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+						<li class="nav-item has-treeview menu-open"><a
+							style="background-color: rgb(32, 178, 170)" th:href="@{/report}"
+							class="nav-link active"> <i class="nav-icon fa fa-area-chart"></i>
+								<p>Báo cáo, Thống kê</p>
+						</a></li>
+						<li class="nav-item has-treeview"><a href="#"
+							class="nav-link"> <i class="nav-icon fa fa-institution"></i>
+								<p>
+									Quản Lý <i class="fas fa-angle-left right"></i> <span
+										class="badge badge-info right">1</span>
+								</p>
+						</a>
+							<ul class="nav nav-treeview">
+								<li class="nav-item"><a th:href="@{/list/person}"
+									class="nav-link"> <i class="fa fa-pencil-square-o nav-icon"></i>
+										<p>Danh sách nộp thuế</p>
+								</a></li>
+								<li class="nav-item"><a th:href="@{/setting}"
+									class="nav-link"> <i class="fa fa-gear nav-icon"></i>
+										<p>Cấu hình</p>
+								</a></li>
+							</ul></li>
+
+						<li class="nav-item" id="camera-li"><a th:href="@{/logout}"
+							class="nav-link"> <i class="fa fa-sign-out nav-icon"></i>
+								<p>Thoát</p>
+						</a></li>
+					</ul>
+				</nav>
+				<!-- /.sidebar-menu -->
+			</div>
+			<!-- /.sidebar -->
+		</aside>
+
+		<div class="content-wrapper">
+		<div id="blockEmpty" style="display: none;">
+           <h2 style="text-align: center; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center;">Không tìm thấy dữ liệu</h2>
+        </div>
+       <div id="blockTable" class="container">   
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>STT</th>
+                <th>Họ và tên</th>
+                <th>Mã số thuế</th>
+                <th>Địa chỉ</th>
+                <th>Kỳ thuế</th>
+                <th>Năm thuế</th>
+                <th>Trạng thái</th>
+                <th>Tổng tiền (VND)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div id="blockPagination">
+    	<div id="pagination1">
+        <button style="border-color: gray;" onclick="prevPage1()">Trang trước</button>
+        <span id="page-numbers1"></span>
+        <button style="border-color: gray;" onclick="nextPage1()">Trang sau</button>
+    </div>
+    </div>
+</div>
+
+		<aside class="control-sidebar control-sidebar-dark">
+			<!-- Control sidebar content goes here -->
+		</aside>
+		<!-- /.control-sidebar -->
+	</div>
+
+
+		<aside class="control-sidebar control-sidebar-dark">
+			<!-- Control sidebar content goes here -->
+		</aside>
+		<!-- /.control-sidebar -->
+	</div>
+
+</body>
+<script>
+function redirectToSelectedOption() {
+    var typeSelect = document.getElementById("type");
+    var monthSelect = document.getElementById("month");
+    var quarterSelect = document.getElementById("quarter");
+    var monthValue = 'Chọn tháng'; // Thay bằng giá trị mà bạn muốn chọn
+	var quarterValue = 'Chọn quý';
+    var selectedType = typeSelect.options[typeSelect.selectedIndex].text;
+
+    if (selectedType === "Tất cả") {
+    	// Duyệt qua từng phần tử option trong select
+    	for (var i = 0; i < monthSelect.options.length; i++) {
+    	    // So sánh giá trị của option với giá trị được chọn
+    	    if (monthSelect.options[i].text === monthValue) {
+    	        // Nếu trùng, đặt thuộc tính selected của option đó thành true
+    	        monthSelect.options[i].selected = true;
+    	        // Thoát khỏi vòng lặp vì đã tìm được giá trị cần chọn
+    	        break;
+    	    }
+    	}
+    	for (var i = 0; i < quarterSelect.options.length; i++) {
+    	    // So sánh giá trị của option với giá trị được chọn
+    	    if (quarterSelect.options[i].text === quarterValue) {
+    	        // Nếu trùng, đặt thuộc tính selected của option đó thành true
+    	        quarterSelect.options[i].selected = true;
+    	        // Thoát khỏi vòng lặp vì đã tìm được giá trị cần chọn
+    	        break;
+    	    }
+    	}
+        monthSelect.disabled = true;
+        quarterSelect.disabled = true;
+    } else if (selectedType === "Theo tháng") {
+    	for (var i = 0; i < quarterSelect.options.length; i++) {
+    	    // So sánh giá trị của option với giá trị được chọn
+    	    if (quarterSelect.options[i].text === quarterValue) {
+    	        // Nếu trùng, đặt thuộc tính selected của option đó thành true
+    	        quarterSelect.options[i].selected = true;
+    	        // Thoát khỏi vòng lặp vì đã tìm được giá trị cần chọn
+    	        break;
+    	    }
+    	}
+        monthSelect.disabled = false;
+        quarterSelect.disabled = true;
+    } else if (selectedType === "Theo quý") {
+    	for (var i = 0; i < monthSelect.options.length; i++) {
+    	    // So sánh giá trị của option với giá trị được chọn
+    	    if (monthSelect.options[i].text === monthValue) {
+    	        // Nếu trùng, đặt thuộc tính selected của option đó thành true
+    	        monthSelect.options[i].selected = true;
+    	        // Thoát khỏi vòng lặp vì đã tìm được giá trị cần chọn
+    	        break;
+    	    }
+    	}
+        monthSelect.disabled = true;
+        quarterSelect.disabled = false;
+    }
+}
+</script>
+
+<script>
+function redirectToSelectedOption() {
+    var typeSelect = document.getElementById("type");
+    var monthSelect = document.getElementById("month");
+    var quarterSelect = document.getElementById("quarter");
+    var monthValue = 'Chọn tháng'; // Thay bằng giá trị mà bạn muốn chọn
+	var quarterValue = 'Chọn quý';
+    var selectedType = typeSelect.options[typeSelect.selectedIndex].text;
+
+    if (selectedType === "Tất cả") {
+    	// Duyệt qua từng phần tử option trong select
+    	for (var i = 0; i < monthSelect.options.length; i++) {
+    	    // So sánh giá trị của option với giá trị được chọn
+    	    if (monthSelect.options[i].text === monthValue) {
+    	        // Nếu trùng, đặt thuộc tính selected của option đó thành true
+    	        monthSelect.options[i].selected = true;
+    	        // Thoát khỏi vòng lặp vì đã tìm được giá trị cần chọn
+    	        break;
+    	    }
+    	}
+    	for (var i = 0; i < quarterSelect.options.length; i++) {
+    	    // So sánh giá trị của option với giá trị được chọn
+    	    if (quarterSelect.options[i].text === quarterValue) {
+    	        // Nếu trùng, đặt thuộc tính selected của option đó thành true
+    	        quarterSelect.options[i].selected = true;
+    	        // Thoát khỏi vòng lặp vì đã tìm được giá trị cần chọn
+    	        break;
+    	    }
+    	}
+        monthSelect.disabled = true;
+        quarterSelect.disabled = true;
+    } else if (selectedType === "Theo tháng") {
+    	for (var i = 0; i < quarterSelect.options.length; i++) {
+    	    // So sánh giá trị của option với giá trị được chọn
+    	    if (quarterSelect.options[i].text === quarterValue) {
+    	        // Nếu trùng, đặt thuộc tính selected của option đó thành true
+    	        quarterSelect.options[i].selected = true;
+    	        // Thoát khỏi vòng lặp vì đã tìm được giá trị cần chọn
+    	        break;
+    	    }
+    	}
+        monthSelect.disabled = false;
+        quarterSelect.disabled = true;
+    } else if (selectedType === "Theo quý") {
+    	for (var i = 0; i < monthSelect.options.length; i++) {
+    	    // So sánh giá trị của option với giá trị được chọn
+    	    if (monthSelect.options[i].text === monthValue) {
+    	        // Nếu trùng, đặt thuộc tính selected của option đó thành true
+    	        monthSelect.options[i].selected = true;
+    	        // Thoát khỏi vòng lặp vì đã tìm được giá trị cần chọn
+    	        break;
+    	    }
+    	}
+        monthSelect.disabled = true;
+        quarterSelect.disabled = false;
+    }
+}
+</script>
+
+
+<script>
+var currentPageButton = null;
+var fetchedData = [];
+var currentPage = 1;
+
+document.querySelector('.btn-info').addEventListener('click', function() {
+	var address = document.getElementById("address").value;
+    var year = document.getElementById("year").value;
+    var type = document.getElementById("type").value;
+    var month = document.getElementById("month").value;
+    var quarter = document.getElementById("quarter").value;
+
+    if (address === "Chọn tỉnh") {
+	    alert("Chưa chọn tỉnh");
+	    return; 
+	}
+	if (year === "Chọn năm") {
+	    alert("Chưa chọn năm");
+	    return; 
+	}
+	if (type === "Hình thức") {
+	    alert("Chưa chọn hình thức đóng thuế");
+	    return; 
+	}
+	if (month === "Chọn tháng") {
+		if (type === "Theo tháng"){
+			alert("Chưa chọn tháng");
+    	    return; 
+		} 	   
+	}
+	if (quarter === "Chọn quý") {
+		if (type === "Theo quý"){
+			alert("Chưa chọn quý");
+    	    return; 
+		} 	   
+	}
+    
+	var url = '/debt/' + encodeURIComponent(address) + '/' + encodeURIComponent(year) 
+	+ '/' + encodeURIComponent(type) + '/' + encodeURIComponent(month) + '/' + encodeURIComponent(quarter);
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            fetchedData = data;
+            checkLengthData(fetchedData);
+            showPage(currentPage);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    function checkLengthData(fetchedData){
+    	if (fetchedData.length === 0) {
+            document.getElementById('blockEmpty').style.display = 'block';
+            document.getElementById('blockTable').style.display = 'none';
+            return;
+        } else {
+            document.getElementById('blockEmpty').style.display = 'none';
+            document.getElementById('blockTable').style.display = 'block';
+        }
+    }
+});
+
+
+function showPage(pageNumber) {
+    var tableBody = document.querySelector('tbody');
+    tableBody.innerHTML = '';
+
+    var rowsPerPage = 11;
+    var startIndex = (pageNumber - 1) * rowsPerPage;
+    var endIndex = startIndex + rowsPerPage;
+    var currentPageData = fetchedData.slice(startIndex, endIndex);
+
+    currentPage = pageNumber;
+    if (currentPageData.length === 0) {
+        document.getElementById('blockPagination').style.display = 'none';
+        return;
+    } else {
+        document.getElementById('blockPagination').style.display = 'block';
+    }
+
+    currentPageData.forEach(function(debt, index) {
+        var row = '<tr>';
+        row += '<th>' + (startIndex + index + 1) + '</th>';
+        row += '<th>' + debt.name + '</th>';
+        row += '<th>' + debt.address + '</th>';
+        row += '<th>' + debt.taxCode + '</th>';
+        row += '<th>' + debt.taxPeriod + '</th>';
+        row += '<th>' + debt.taxYear + '</th>';
+        row += '<th>' + debt.status+ '</th>';
+        row += '<th>' + debt.taxMoney+ '</th>';
+        row += '</tr>';
+        tableBody.innerHTML += row;
+    });
+
+    updatePagination();
+
+    // Gọi hàm selectPage để chọn ô số trang hiện tại
+    if (currentPageButton !== null) {
+        selectPage(currentPageButton);
+    }
+}
+
+function renderPageNumbers(totalPages) {
+    var pageNumberContainer = document.getElementById('page-numbers1');
+    pageNumberContainer.innerHTML = '';
+
+    for (var i = 1; i <= totalPages; i++) {
+        var button = document.createElement('button');
+        button.textContent = i;
+        button.classList.add('page-number');
+        button.onclick = function() {
+            showPage(parseInt(this.textContent));
+        };
+        pageNumberContainer.appendChild(button);
+    }
+}
+
+function updatePagination() {
+    var totalPages = Math.ceil(fetchedData.length / 11);
+    renderPageNumbers(totalPages);
+
+    var pageButtons = document.querySelectorAll('#page-numbers1 button');
+    pageButtons.forEach(function(button, index) {
+        if (index + 1 === currentPage) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
+    });
+}
+
+
+function prevPage1() {
+    if (currentPage > 1) {
+        showPage(currentPage - 1);
+    }
+}
+
+function nextPage1() {
+    var totalPages = Math.ceil(fetchedData.length / 11);
+    if (currentPage < totalPages) {
+        showPage(currentPage + 1);
+    }
+}
+
+function selectPage(pageNumberButton) {
+    // Loại bỏ lớp 'active' khỏi ô số trang hiện tại
+    if (currentPageButton !== null) {
+        currentPageButton.classList.remove('active');
+    }
+    // Thêm lớp 'active' vào ô số trang mới được chọn
+    pageNumberButton.classList.add('active');
+    // Lưu trữ ô số trang mới được chọn
+    currentPageButton = pageNumberButton;
+}
+
+showPage(currentPage);
+
+
+</script>
+
+
+
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+
+

@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>IOT-N13</title>
+<!-- Tell the browser to be responsive to screen width -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+<!-- Ionicons -->
+<link rel="stylesheet"
+	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<!-- Tempusdominus Bbootstrap 4 -->
+<link rel="stylesheet"
+	href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+<!-- iCheck -->
+<link rel="stylesheet"
+	href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+<!-- JQVMap -->
+<link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="dist/css/adminlte.min.css">
+<!-- overlayScrollbars -->
+<link rel="stylesheet"
+	href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+<!-- Daterange picker -->
+<link rel="stylesheet"
+	href="plugins/daterangepicker/daterangepicker.css">
+<!-- summernote -->
+<link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+  <link href="css/login.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+   
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<style>
+.table-dark tr th {
+	text-align: center;
+}
+
+.table tbody tr td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+/* CSS cho các trang khác */
+#chartSelect {
+	padding: 5px; /* Kích thước padding bên trong select */
+	border: 1px solid red; /* Viền xung quanh select */
+	border-radius: 4px; /* Bo tròn viền của select */
+	font-size: 15px; /* Kích thước chữ */
+	background-color: #fff; /* Màu nền của select */
+	color: #333; /* Màu chữ của select */
+	appearance: none;
+	/* Ẩn giao diện mặc định của select (đối với trình duyệt webkit-based) */
+	cursor: pointer; /* Con trỏ khi hover qua select */
+}
+
+/* Tùy chỉnh giao diện cho tùy chọn option */
+#chartSelect option {
+	font-size: 14px; /* Kích thước chữ */
+	background-color: #fff; /* Màu nền của option */
+	color: #333; /* Màu chữ của option */
+}
+
+/* Tùy chỉnh giao diện khi select được nhấp chọn */
+#chartSelect:focus {
+	border-color: #007bff; /* Màu viền khi select được chọn */
+	box-shadow: 0 0 5px rgb(64, 128, 128);
+	/* Hiệu ứng bóng khi select được chọn */
+}
+
+/* Tùy chỉnh giao diện khi hover qua option */
+#chartSelect option:hover {
+	background-color: #007bff; /* Màu nền khi hover qua option */
+	color: #fff; /* Màu chữ khi hover qua option */
+}
+
+
+.custom-modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	background-color: #fefefe;
+	border: 1px solid #888;
+	max-width: 100%;
+	max-height: 100%;
+	width: auto;
+	height: auto;
+	text-align: center;
+	overflow: hidden;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.modal-content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	max-height: none;
+}
+
+.modal-content img {
+	max-width: 100%;
+	max-height: 100%;
+	width: auto;
+	height: auto;
+}
+
+.enlarged-modal img {
+	max-width: 350px;
+	max-height: 370px;
+	width: auto;
+	height: auto;
+}
+
+#enlargeButton {
+	position: absolute;
+	top: 3px;
+	left: 0;
+	right: 0;
+	font-size: 20px;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	z-index: 1; /* Để nút nằm phía trên hình ảnh */
+}
+
+#imageContainer {
+	display: none;
+	position: relative;
+}
+
+#closeButton {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	cursor: pointer;
+}
+</style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+	<div class="wrapper">
+
+		<!-- Navbar -->
+		<nav
+			class="main-header navbar navbar-expand navbar-white navbar-light"
+			style="height: 45px">
+			<!-- Left navbar links -->
+			<ul class="navbar-nav">
+				<li class="nav-item"><a class="nav-link" data-widget="pushmenu"
+					href="#" role="button"><i class="fas fa-bars"></i></a></li>
+			</ul>
+			<select style="width: 100px;margin-left: 10px" id="year" class="form-select" onchange="redirectToSelectedOption()">
+			    <option>2024</option>
+			    <option>2023</option>
+			    <option>2022</option>
+	        </select>
+	        
+	        <select style="width: 150px;margin-left: 20px" id="type" class="form-select" onchange="handleOptionChange()">
+			    <option>Biểu đồ</option>
+			    <option>Bảng số liệu</option>
+	        </select>
+	  
+		</nav>
+		<!-- /.navbar -->
+
+		<!-- Main Sidebar Container -->
+		<aside class="main-sidebar sidebar-dark-primary elevation-4">
+			<!-- Brand Logo -->
+			<!-- Sidebar -->
+			<div style="height: 430px" class="sidebar">
+				<!-- Sidebar user panel (optional) -->
+				<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+					<div class="image">
+						<i style="margin-left: 9px;margin-top: 10px;color: white;" class="fa fa-user-circle nav-icon"></i>
+					</div>
+					<div class="info">
+						<a href="#" class="d-block" style="text-decoration: none" th:if = "${session.account!=null}">[[${session.account.username}]]</a>
+					</div>
+				</div>
+
+				<!-- Sidebar Menu -->
+				<nav class="mt-2">
+					<ul class="nav nav-pills nav-sidebar flex-column"
+						data-widget="treeview" role="menu" data-accordion="false">
+						<!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+						<li class="nav-item has-treeview menu-open"><a
+							style="background-color: rgb(32, 178, 170)" th:href="@{/report}"
+							class="nav-link active"> <i class="nav-icon fa fa-area-chart"></i>
+								<p>Báo cáo, Thống kê</p>
+						</a></li>
+						<li class="nav-item has-treeview"><a href="#"
+							class="nav-link"> <i class="nav-icon fa fa-institution"></i>
+								<p>
+									Quản Lý <i class="fas fa-angle-left right"></i> <span
+										class="badge badge-info right">1</span>
+								</p>
+						</a>
+							<ul class="nav nav-treeview">
+								<li class="nav-item"><a th:href="@{/list/person}"
+									class="nav-link"> <i class="fa fa-pencil-square-o nav-icon"></i>
+										<p>Danh sách nộp thuế</p>
+								</a></li>
+								<li class="nav-item"><a th:href="@{/setting}"
+									class="nav-link"> <i class="fa fa-gear nav-icon"></i>
+										<p>Cấu hình</p>
+								</a></li>
+							</ul></li>
+
+						<li class="nav-item" id="camera-li"><a th:href="@{/logout}"
+							class="nav-link"> <i class="fa fa-sign-out nav-icon"></i>
+								<p>Thoát</p>
+						</a></li>
+					</ul>
+				</nav>
+				<!-- /.sidebar-menu -->
+			</div>
+			<!-- /.sidebar -->
+		</aside>
+
+		<div class="content-wrapper">
+		
+		<div id="blockTable" style="display: none"  class="container">
+    <table class="table table-striped table-bordered" style="width: 100%;">
+        <thead class="table-dark">
+            <tr>
+                <th>STT</th>
+                <th>Mức thu nhập</th>
+                <th>Tổng thuế đã thu (VND)</th>
+                <th>Tổng thuế còn nợ (VND)</th>
+            </tr>
+        </thead>
+        <tbody id = "data">
+        	
+        </tbody>
+    </table>
+	
+		</div>
+		
+		<div id="blockGraph" style="background-color:white" class="container">
+		    <div style="height: 250px" class="card">
+				<div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <h3 class="card-title">
+        <i style="color:gray;" class="fa fa-area-chart"></i>
+    </h3>
+    <h3 style="font-size: 17px;margin-left: 300px">Thống kê theo tháng</h3>
+    <div class="card-tools" style="margin-left: auto;">
+        <ul class="nav nav-pills">
+            <li style="margin-right: 10px" class="nav-item"><a class="nav-link active" href="#revenue-chart" data-toggle="tab">Đường</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sales-chart" data-toggle="tab">Cột</a></li>
+        </ul>
+    </div>
+</div>
+
+				<!-- /.card-header -->
+				<div class="card-body">
+					<div class="tab-content p-0">
+						<!-- Morris chart - Sales -->
+						<div class="chart tab-pane active" id="revenue-chart"
+							style="position: relative; height: 190px;">
+							<canvas id="cookieChart" height="180"
+								style="height: 180px; width: 900px;"></canvas>
+						</div>
+						<div class="chart tab-pane" id="sales-chart"
+							style="position: relative; height: 190px;">
+							<canvas id="cookieChart1" height="180"
+								style="height: 18px; width: 900px"></canvas>
+						</div>
+					</div>
+				</div>
+				<!-- /.card-body -->
+			</div>
+		
+			<div style="height: 270px" class="card">
+				<div style="display: flex; justify-content: space-between; height: 48px;" class="card-header">
+    <h3 class="card-title">
+        <i style="color:gray;margin-top: 13px" class="fa fa-area-chart"></i>
+    </h3>
+    
+    <h3 style="margin-top: 7px;margin-right: 200px ;font-weight: 500;" class="card-title">
+        Thống kê theo quý
+    </h3>
+</div>
+
+
+				<!-- /.card-header -->
+				<div class="card-body">
+					<div style="width: 940px" class="chart-container">
+						<canvas id="combined-chart"></canvas>
+					</div>
+				</div>
+				<!-- /.card-body -->
+			</div>
+			<!-- Charts -->
+			
+			<!-- chart -->
+
+
+		</div>
+	</div>
+
+
+		<aside class="control-sidebar control-sidebar-dark">
+			<!-- Control sidebar content goes here -->
+		</aside>
+		<!-- /.control-sidebar -->
+	</div>
+
+</body>
+<script th:inline="javascript">
+    function redirectToSelectedOption() {
+        // Lấy giá trị của option được chọn
+        var selectedOption = document.getElementById("year").value;
+		
+        fetch("http://localhost:6677/statistical/income/" + selectedOption)
+        .then(response => response.json())
+        .then(data => {
+            // Gọi hàm để cập nhật dữ liệu vào bảng
+            updateTableData(data);
+        })
+        .catch(error => console.error("Error fetching data:", error));
+        // Gửi yêu cầu GET đến API
+        fetch('http://localhost:6677/statistical/' + selectedOption)
+            .then(response => response.json())
+            .then(data => {
+                updateChartData(data);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    
+    function updateTableData(data) {
+    	var tbody = document.getElementById("data");
+    	tbody.innerHTML = ""; // Xóa nội dung cũ của tbody
+    	var data1 = data[0];
+    	var data2 = data[1];
+    	// Dòng 1
+    	var row1 = "<tr>";
+    	row1 += "<td>1</td>"; // STT
+    	row1 += "<td>Đến 5 triệu đồng</td>"; // Tổng thuế đã thu từ data1
+    	row1 += "<td>" + data1[0] + "</td>"; // Mức thu nhập từ data1
+    	row1 += "<td>" + data2[0] + "</td>"; // Tổng thuế còn nợ từ data2
+    	row1 += "</tr>";
+
+    	// Dòng 2
+    	var row2 = "<tr>";
+    	row2 += "<td>2</td>"; // STT
+    	row2 += "<td>Trên 5 triệu đồng đến 10 triệu đồng</td>"; // Tổng thuế đã thu từ data1
+    	row2 += "<td>" + data1[1] + "</td>"; // Mức thu nhập từ data1
+    	row2 += "<td>" + data2[1] + "</td>"; // Tổng thuế còn nợ từ data2
+    	row2 += "</tr>";
+
+    	// Dòng 3
+    	var row3 = "<tr>";
+    	row3 += "<td>3</td>"; // STT
+    	row3 += "<td>Trên 10 triệu đồng đến 18 triệu đồng</td>"; // Tổng thuế đã thu từ data1
+    	row3 += "<td>" + data1[2] + "</td>"; // Mức thu nhập từ data1
+    	row3 += "<td>" + data2[2] + "</td>"; // Tổng thuế còn nợ từ data2
+    	row3 += "</tr>";
+
+    	// Dòng 4
+    	var row4 = "<tr>";
+    	row4 += "<td>4</td>"; // STT
+    	row4 += "<td>Trên 18 triệu đồng đến 32 triệu đồng</td>"; // Tổng thuế đã thu từ data1
+    	row4 += "<td>" + data1[3] + "</td>"; // Mức thu nhập từ data1
+    	row4 += "<td>" + data2[3] + "</td>"; // Tổng thuế còn nợ từ data2
+    	row4 += "</tr>";
+
+    	// Dòng 5
+    	var row5 = "<tr>";
+    	row5 += "<td>5</td>"; // STT   	
+    	row5 += "<td>Trên 32 triệu đồng đến 52 triệu đồng</td>"; // Tổng thuế đã thu từ data1
+    	row5 += "<td>" + data1[4] + "</td>"; // Mức thu nhập từ data1
+    	row5 += "<td>" + data2[4] + "</td>"; // Tổng thuế còn nợ từ data2
+    	row5 += "</tr>";
+
+    	// Dòng 6
+    	var row6 = "<tr>";
+    	row6 += "<td>6</td>"; // STT   	
+    	row6 += "<td>Trên 52 triệu đồng đến 80 triệu đồng</td>"; // Tổng thuế đã thu từ data1
+    	row6 += "<td>" + data1[5] + "</td>"; // Mức thu nhập từ data1
+    	row6 += "<td>" + data2[5] + "</td>"; // Tổng thuế còn nợ từ data2
+    	row6 += "</tr>";
+
+    	// Dòng 7
+    	var row7 = "<tr>";
+    	row7 += "<td>7</td>"; // STT   	
+    	row7 += "<td>Trên 80 triệu đồng</td>"; // Tổng thuế đã thu từ data1
+    	row7 += "<td>" + data1[6] + "</td>"; // Mức thu nhập từ data1
+    	row7 += "<td>" + data2[6] + "</td>"; // Tổng thuế còn nợ từ data2
+    	row7 += "</tr>";
+
+    	// Dòng 8
+    	var row8 = "<tr>";
+    	row8 += "<td>8</td>"; // STT   	
+    	row8 += "<td>Tổng</td>"; // Tổng thuế đã thu từ data1
+    	row8 += "<td>" + data1[7] + "</td>"; // Mức thu nhập từ data1
+    	row8 += "<td>" + data2[7] + "</td>"; // Tổng thuế còn nợ từ data2
+    	row8 += "</tr>";
+
+    	// Ghép các dòng vào tbody của bảng
+    	tbody.innerHTML = row1 + row2 + row3 + row4 + row5 + row6 + row7 + row8;
+
+    }
+
+    function updateChartData(data) {
+    	var labels = [];
+    	for (var i = 0; i < data[0].length; i++) {
+    		labels.push("Tháng " + data[0][i]);
+    	}
+        var dataS1 = data[2];
+        var dataS2 = data[3];
+        
+        var labels2 = [];
+        for (var i = 0; i < data[1].length; i++) {
+    		labels2.push("Quý " + data[1][i]);
+    	}
+        const chartData1 = data[4];
+        const chartData2 = data[5];
+        
+        updateLineChart(labels, dataS1, dataS2);
+        updateBarChart(labels, dataS1, dataS2);
+        updateCombinedChart(labels2, chartData1, chartData2);
+    }
+
+    function updateLineChart(labels, dataS1, dataS2) {
+        var canvasElement = document.getElementById("cookieChart");
+        var ctx1 = canvasElement.getContext("2d");
+
+        if (window.lineChart1) {
+            window.lineChart1.destroy();
+        }
+
+        window.lineChart1 = new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                        label: 'Thuế đã thu',
+                        data: dataS1,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1.5,
+                        fill: false,
+                        showLine: true,
+                        tension: 0.4,
+                        pointRadius: 1,
+                        borderDash: [5, 5],
+                    },
+                    {
+                        label: 'Nợ thuế',
+                        data: dataS2,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1.5,
+                        fill: false,
+                        showLine: true,
+                        tension: 0.4,
+                        pointRadius: 1,
+                        borderDash: [5, 5],
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'category',
+                        labels: labels,
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    function updateBarChart(labels, dataS1, dataS2) {
+        var canvasElement = document.getElementById("cookieChart1");
+        var ctx2 = canvasElement.getContext("2d");
+
+        if (window.barChart1) {
+            window.barChart1.destroy();
+        }
+
+        window.barChart1 = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                        label: 'Thuế đã thu',
+                        data: dataS1,
+                        backgroundColor: 'green'
+                    },
+                    {
+                        label: 'Nợ thuế',
+                        data: dataS2,
+                        backgroundColor: 'red'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'category',
+                        labels: labels,
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    function updateCombinedChart(labels, chartData1, chartData2) {
+        const chartContainer = document.querySelector('.chart-container');
+        const canvas = document.getElementById('combined-chart');
+        const ctx = canvas.getContext('2d');
+
+        if (window.combinedChart) {
+            window.combinedChart.destroy();
+        }
+
+        // Tính toán chiều cao dựa trên số lượng dữ liệu thực tế
+        const dataLength = Math.max(chartData1.length, chartData2.length);
+        const height = dataLength * 50; // Điều chỉnh hằng số này tùy theo nhu cầu
+
+        // Đặt chiều cao của container của biểu đồ
+        chartContainer.style.height = height + 'px';
+
+        canvas.width = chartContainer.clientWidth;
+        canvas.height = chartContainer.clientHeight;
+
+        window.combinedChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                        label: 'Thuế đã thu',
+                        data: chartData1,
+                        fill: false,
+                        showLine: true,
+                        tension: 0.4,
+                        pointRadius: 1,
+                        borderWidth: 1,
+                        backgroundColor: 'rgba(144, 238, 144, 0.7)',
+                        fill: true,
+                    },
+                    {
+                        label: 'Nợ thuế',
+                        data: chartData2,
+                        fill: false,
+                        showLine: true,
+                        tension: 0.4,
+                        pointRadius: 1,
+                        borderWidth: 1,
+                        backgroundColor: 'rgba(255, 192, 203, 0.8)', // Màu nhạt 2
+                        fill: true,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'category',
+                        labels: labels,
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+        });
+    }
+
+
+    // Mặc định hiển thị biểu đồ đường khi trang tải lên
+    redirectToSelectedOption();
+    
+    function handleOptionChange() {
+        var selectBox = document.getElementById("type");
+        var selectedValue = selectBox.options[selectBox.selectedIndex].text;
+
+        if (selectedValue === "Biểu đồ") {
+            document.getElementById("blockGraph").style.display = "block";
+            document.getElementById("blockTable").style.display = "none";
+            
+            updateChartData();
+            
+        } else if (selectedValue === "Bảng số liệu") {
+            document.getElementById("blockGraph").style.display = "none";
+            document.getElementById("blockTable").style.display = "block";
+        }
+        
+        // Gọi lại hàm updateChartData() khi chuyển từ bảng sang đồ thị
+        if (selectedValue === "Biểu đồ") {
+            updateChartData();
+        }
+    }
+</script>
+
+
+
+
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+
+

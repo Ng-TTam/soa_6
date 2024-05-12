@@ -402,6 +402,10 @@ function toggleEditMode() {
     	});
 
 		if(checkValuesValidity(taxList)){
+			taxList.forEach(tax => {
+				tax.amountLeast = tax.amountLeast.replace(/\./g, "");
+			    tax.amountLargest = tax.amountLargest.replace(/\./g, "");
+			});
 	    	// Gửi danh sách taxList đến API
 	    	fetch('http://localhost:6677/api/taxes/update', {
 	    	    method: 'POST',
@@ -433,12 +437,12 @@ function checkValuesValidity(taxList) {
             alert("Phần thu nhập lớn nhất hàng " + (i + 1) + " chứa chữ! Vui lòng nhập số.");
             return false;
         }
-        const currentAmount = parseFloat(taxList[i].amountLargest);
-        
         if (/[a-zA-Z]/.test(taxList[i].percentOfTax)) {
             alert("Phần thuế suất hàng " + (i + 1) + " chứa chữ! Vui lòng nhập số.");
             return false;
         }
+        
+        const currentAmount = parseFloat(taxList[i].amountLargest);
         const currentPercent = parseFloat(taxList[i].percentOfTax);
 
         if (isNaN(currentAmount)) {
@@ -494,6 +498,11 @@ function checkValuesValidity(taxList) {
 
             if (currentPercent >= nextPercent) {
                 alert("Phần thuế suất hàng " + (i + 1) + " không thể lớn hơn hoặc bằng phần thuế suất của hàng sau.");
+                return false;
+            }
+            
+            if (nextPercent >= 100) {
+                alert("Phần thuế suất hàng " + (i + 2) + " phải nhỏ hơn 100.");
                 return false;
             }
         }

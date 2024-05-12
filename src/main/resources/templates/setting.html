@@ -366,14 +366,16 @@ function toggleEditMode() {
 		    const td = cellsInColumn3[i];
             const input = document.createElement('input');
             input.setAttribute('type', 'text');
-            input.setAttribute('value', td.textContent);
+            input.setAttribute('value', td.textContent.replace(/\./g, ""));
             td.textContent = '';
             td.appendChild(input);
+            updateAmountLeast(input);
 
             // Thêm sự kiện input cho mỗi ô nhập dữ liệu trong cột "Amount Largest"
             input.addEventListener('input', function () {
                 updateAmountLeast(this); // Gọi hàm cập nhật giá trị ở cột "Amount Least" của hàng tiếp theo
             });
+            
         }
         
         tableBody.querySelectorAll('td:nth-child(4)').forEach(td => {
@@ -402,10 +404,10 @@ function toggleEditMode() {
     	});
 
 		if(checkValuesValidity(taxList)){
-			taxList.forEach(tax => {
-				tax.amountLeast = tax.amountLeast.replace(/\./g, "");
-			    tax.amountLargest = tax.amountLargest.replace(/\./g, "");
-			});
+			//taxList.forEach(tax => {
+			//	tax.amountLeast = tax.amountLeast.replace(/\./g, "");
+			//    tax.amountLargest = tax.amountLargest.replace(/\./g, "");
+			//});
 	    	// Gửi danh sách taxList đến API
 	    	fetch('http://localhost:6677/api/taxes/update', {
 	    	    method: 'POST',
@@ -430,6 +432,7 @@ function toggleEditMode() {
 		}
     }
 }
+
 
 function checkValuesValidity(taxList) {
     for (let i = 0; i < taxList.length; i++) {

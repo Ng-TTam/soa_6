@@ -429,7 +429,16 @@ function toggleEditMode() {
 
 function checkValuesValidity(taxList) {
     for (let i = 0; i < taxList.length; i++) {
+    	if (/[a-zA-Z]/.test(taxList[i].amountLargest)) {
+            alert("Phần thu nhập lớn nhất hàng " + (i + 1) + " chứa chữ! Vui lòng nhập số.");
+            return false;
+        }
         const currentAmount = parseFloat(taxList[i].amountLargest);
+        
+        if (/[a-zA-Z]/.test(taxList[i].percentOfTax)) {
+            alert("Phần thuế suất hàng " + (i + 1) + " chứa chữ! Vui lòng nhập số.");
+            return false;
+        }
         const currentPercent = parseFloat(taxList[i].percentOfTax);
 
         if (isNaN(currentAmount)) {

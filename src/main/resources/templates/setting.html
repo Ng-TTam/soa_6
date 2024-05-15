@@ -366,14 +366,16 @@ function toggleEditMode() {
 		    const td = cellsInColumn3[i];
             const input = document.createElement('input');
             input.setAttribute('type', 'text');
-            input.setAttribute('value', td.textContent);
+            input.setAttribute('value', td.textContent.replace(/\./g, ""));
             td.textContent = '';
             td.appendChild(input);
+            updateAmountLeast(input);
 
             // Thêm sự kiện input cho mỗi ô nhập dữ liệu trong cột "Amount Largest"
             input.addEventListener('input', function () {
                 updateAmountLeast(this); // Gọi hàm cập nhật giá trị ở cột "Amount Least" của hàng tiếp theo
             });
+            
         }
         
         tableBody.querySelectorAll('td:nth-child(4)').forEach(td => {
@@ -402,6 +404,10 @@ function toggleEditMode() {
     	});
 
 		if(checkValuesValidity(taxList)){
+			//taxList.forEach(tax => {
+			//	tax.amountLeast = tax.amountLeast.replace(/\./g, "");
+			//    tax.amountLargest = tax.amountLargest.replace(/\./g, "");
+			//});
 	    	// Gửi danh sách taxList đến API
 	    	fetch('http://localhost:6677/api/taxes/update', {
 	    	    method: 'POST',
@@ -427,8 +433,18 @@ function toggleEditMode() {
     }
 }
 
+
 function checkValuesValidity(taxList) {
     for (let i = 0; i < taxList.length; i++) {
+    	if (/[a-zA-Z]/.test(taxList[i].amountLargest)) {
+            alert("Phần thu nhập lớn nhất hàng " + (i + 1) + " chứa chữ! Vui lòng nhập số.");
+            return false;
+        }
+        if (/[a-zA-Z]/.test(taxList[i].percentOfTax)) {
+            alert("Phần thuế suất hàng " + (i + 1) + " chứa chữ! Vui lòng nhập số.");
+            return false;
+        }
+        
         const currentAmount = parseFloat(taxList[i].amountLargest);
         const currentPercent = parseFloat(taxList[i].percentOfTax);
 
@@ -485,6 +501,11 @@ function checkValuesValidity(taxList) {
 
             if (currentPercent >= nextPercent) {
                 alert("Phần thuế suất hàng " + (i + 1) + " không thể lớn hơn hoặc bằng phần thuế suất của hàng sau.");
+                return false;
+            }
+            
+            if (nextPercent >= 100) {
+                alert("Phần thuế suất hàng " + (i + 2) + " phải nhỏ hơn 100.");
                 return false;
             }
         }

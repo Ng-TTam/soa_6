@@ -333,7 +333,7 @@
 		            </div>
 		            <!-- Nút "Edit" được đặt bên phải và nằm dưới bảng -->
 		            <div style="text-align: right;">
-		                <a th:href="@{/edit}" class="btn btn-primary" style="margin-top: 20px;">Edit</a>
+		                <button onclick="toggleEditMode()" class="btn btn-primary" style="margin-top: 20px;">Save</button>
 		            </div>
 		        </div>
 		    </div>
@@ -350,23 +350,150 @@
 
 </body>
 <script>
-fetch('http://localhost:6677/api/taxes')
-.then(response => response.json()) // Convert response to JSON
-.then(data => {
-  data.forEach(tax => {
-    const amountLargest = tax.amountLargest === -1 ? "Không giới hạn" : tax.amountLargest.toLocaleString('vi-VN', { maximumFractionDigits: 0 }); // Format with commas
+function toggleEditMode() {
+    const tableBody = document.getElementById('taxTableBody');
+    const editButton = document.querySelector('button');
+    const taxList = [];
 
+    // Lặp qua từng hàng trong bảng để thu thập thông tin và tạo các đối tượng tax
+    tableBody.querySelectorAll('tr').forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const tax = {
+            id: cells[0].textContent,
+            taxBacket: cells[0].textContent,
+            amountLeast: cells[1].textContent,
+            amountLargest: cells[2].querySelector('input') ? cells[2].querySelector('input').value : '-1',
+            percentOfTax: cells[3].querySelector('input').value
+        };
+        console.log(tax);
+        taxList.push(tax); // Thêm tax vào danh sách taxList
+    });
+
+    if (checkValuesValidity(taxList)) {
+        // Gửi danh sách taxList đến API
+        fetch('http://localhost:6677/api/taxes/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(taxList), // Chuyển danh sách thành dạng JSON
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Xử lý phản hồi từ API nếu cần
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+        window.alert("Dữ liệu đã được lưu thành công!");
+        window.location.replace("http://localhost:6677/setting");
+    } else {
+        console.error("Invalid data. Please check again.");
+    }
+}
+
+function checkValuesValidity(taxList) {
+    for (let i = 0; i < taxList.length; i++) {
+        if (/[a-zA-Z]/.test(taxList[i].amountLargest)) {
+            alert("Phần thu nhập lớn nhất hàng " + (i + 1) + " chứa chữ! Vui lòng nhập số.");
+            return false;
+        }
+        if (/[a-zA-Z]/.test(taxList[i].percentOfTax)) {
+            alert("Phần thuế suất hàng " + (i + 1) + " chứa chữ! Vui lòng nhập số.");
+            return false;
+        }
+
+        const currentAmount = parseFloat(taxList[i].amountLargest);
+        const currentPercent = parseFloat(taxList[i].percentOfTax);
+
+        if (isNaN(currentAmount) || isNaN(currentPercent)) {
+            alert("Invalid data at row " + (i + 1) + ". Please enter valid numbers.");
+            return false;
+        }
+
+        if (currentAmount < 0 && i != 6) {
+            alert("Phần thu nhập lớn nhất hàng " + (i + 1) + " không thể là số âm.");
+            return false;
+        }
+
+        if (currentPercent < 0) {
+            alert("Phần thuế suất hàng " + (i + 1) + " không thể là số âm.");
+            return false;
+        }
+
+        if (currentPercent == 0 || currentAmount == 0) {
+            alert("Phần thuế suất và thu nhập lớn nhất của hàng " + (i + 1) + " phải khác 0.");
+            return false;
+        }
+
+        // Kiểm tra xem nếu không phải là hàng cuối cùng
+        if (i < taxList.length - 2) {
+            const nextAmount = parseFloat(taxList[i + 1].amountLargest);
+            const nextPercent = parseFloat(taxList[i + 1].percentOfTax);
+
+            // Kiểm tra xem phần thu nhập lớn nhất hiện tại có nhỏ hơn phần thu nhập lớn nhất của hàng sau không
+            if (currentAmount >= nextAmount) {
+                alert("Phần thu nhập lớn nhất hàng " + (i + 1) + " không thể lớn hơn hoặc bằng phần thu nhập lớn nhất của hàng sau.");
+                return false;
+            }
+
+            // Kiểm tra xem phần thuế suất hiện tại có nhỏ hơn phần thuế suất của hàng sau không
+            if (currentPercent >= nextPercent) {
+                alert("Phần thuế suất hàng " + (i + 1) + " không thể lớn hơn hoặc bằng phần thuế suất của hàng sau.");
+                return false;
+            }
+        }
+
+        if (i == taxList.length - 2) {
+            const nextPercent = parseFloat(taxList[i + 1].percentOfTax);
+
+            if (currentPercent >= nextPercent) {
+                alert("Phần thuế suất hàng " + (i + 1) + " không thể lớn hơn hoặc bằng phần thuế suất của hàng sau.");
+                return false;
+            }
+
+            if (nextPercent >= 100) {
+                alert("Phần thuế suất hàng " + (i + 2) + " phải nhỏ hơn 100.");
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+// Hàm cập nhật giá trị ở cột "Amount Least" của hàng tiếp theo
+function updateAmountLeast(input) {
+    const currentRow = input.parentNode.parentNode; // Ô nhập dữ liệu hiện tại
+    const nextRow = currentRow.nextElementSibling; // Hàng tiếp theo
+    if (nextRow) { // Kiểm tra xem có hàng tiếp theo không
+        const amountLeastCell = nextRow.querySelector('td:nth-child(2)'); // Ô "Amount Least" của hàng tiếp theo
+        if (amountLeastCell) { // Kiểm tra xem ô "Amount Least" có tồn tại không
+            amountLeastCell.textContent = input.value; // Cập nhật
+        }
+    }
+    }
+
+    fetch('http://localhost:6677/api/taxes')
+    .then(response => response.json()) // Chuyển đổi phản hồi sang JSON
+    .then(data => {
+    data.forEach(tax => {
+    const amountLargest = tax.amountLargest === -1 ? "Không giới hạn" : tax.amountLargest; // Format số với dấu phẩy
+    
     const row = `<tr>
-      <td>${tax.taxBacket}</td>
-      <td>Trên ${tax.amountLeast.toLocaleString('vi-VN', { maximumFractionDigits: 0 })}</td>  <td>${amountLargest}</td>
-      <td>${tax.percentOfTax}</td>
-    </tr>`;
+        <td>${tax.taxBacket}</td>
+        <td>${tax.amountLeast}</td>
+        <td>${tax.amountLargest !== -1 ? `<input type="text" value="${amountLargest}" oninput="updateAmountLeast(this)">` : 'Không giới hạn'}</td>
+        <td><input type="text" value="${tax.percentOfTax}" oninput="updatePercentOfTax(this)"></td>
+      </tr>`;
     document.getElementById('taxTableBody').insertAdjacentHTML('beforeend', row);
-  });
-})
-.catch(error => {
-  console.error('Lỗi khi lấy dữ liệu từ API:', error);
-});
+    });
+    })
+    .catch(error => {
+    console.error('Lỗi khi lấy dữ liệu từ API:', error);
+    });
 
 </script>
 

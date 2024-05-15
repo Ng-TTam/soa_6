@@ -141,4 +141,9 @@ public class MainController {
 		return"setting";
 	}
 	
+	@GetMapping(value = "/edit")
+	public String editSetting(){  
+		return"editSetting";
+	}
+	
 }

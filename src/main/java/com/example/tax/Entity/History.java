@@ -40,7 +40,7 @@ public class History {
 	@Column(name = "tax_money")
 	private long taxMoney;
 	
-	@Column(name = "number_of_days_ late")
+	@Column(name = "number_of_days_late")
 	private int numberOfDayLate;
 	
 	@Column(name = "fined_amount")
